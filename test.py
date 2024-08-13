@@ -18,6 +18,7 @@ def parseImageToMessages(img):
     npFixedPack = numpy.packbits(npMergedColumns,bitorder='little')
     imgFixedBytes = npFixedPack.tobytes()
     #Split the bytes into 2 arrays, exactly in half, so we get 2 arrays of 64x64 pixels (4096 bits)
+    #This is because the HID message maxes out at 1024 bytes, and 6 of our bytes are eaten up by the magic numbers needed below
     a = list(imgFixedBytes)[:len(imgFixedBytes)//2]
     b = list(imgFixedBytes)[len(imgFixedBytes)//2:]
     #0x06 is the data direction... (I think?  it's HID weirdness)
