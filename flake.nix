@@ -12,15 +12,11 @@
     packages = forAllSystems (system: let
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [
-        ];
       };
     in pkgs.callPackages ./pkgs {inherit self inputs;});
     devShells = forAllSystems (system: let
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [
-        ];
       };
     in {
       default = pkgs.mkShell {
@@ -28,13 +24,13 @@
           zsh
           exit
         '';
-        packages = (with pkgs; [
-          python3
-        ]) ++ (with pkgs.python3Packages; [
-          hidapi
-          numpy
-          pillow
-        ]);
+        packages = [
+          (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
+            hidapi
+            numpy
+            pillow
+          ]))
+        ];
       };
     });
   };
